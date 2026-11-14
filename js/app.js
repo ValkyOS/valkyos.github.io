@@ -5,12 +5,12 @@ const LOCALE = { es: "es-UY", en: "en-US", pt: "pt-BR" };
 
 const GITHUB = "https://github.com/ValkyOS";
 const KOFI = "https://ko-fi.com/dvyjp";
-const SPONSOR = "https://github.com/sponsors/dvy-jp";
 const TELEGRAM = ""; // vacío por ahora: no se muestra
 const LICENCIA = "https://github.com/ValkyOS/valkyos.github.io/blob/main/LICENSE";
 
 let lang = idiomaInicial();
 let DATA = null;
+let CAPTURAS = [];
 
 function idiomaInicial() {
   try {
@@ -34,11 +34,6 @@ function fmtFecha(iso) {
   return new Date(+m[1], +m[2] - 1, +m[3]).toLocaleDateString(LOCALE[lang], { day: "numeric", month: "long", year: "numeric" });
 }
 
-function nombreDispositivo(id) {
-  const d = (DATA && DATA.dispositivos || []).find(x => x.id === id);
-  return d ? d.nombre : (id || "");
-}
-
 /* ---------- render ---------- */
 function render() {
   const t = textos();
@@ -50,30 +45,36 @@ function render() {
     b.setAttribute("aria-pressed", String(b.dataset.l === lang)));
 
   document.getElementById("nav").innerHTML =
-    ["inicio", "funciones", "apps", "descargas", "instalar", "compilar", "faq", "creditos", "apoyar"]
+    ["inicio", "funciones", "acerca", "descargas", "instalar", "compilar", "faq", "apoyar"]
       .map(k => `<a href="#${k}">${esc(t.nav[k])}</a>`).join("");
 
   document.getElementById("app").innerHTML = [
     hero(t),
     funciones(t),
+    acerca(t),
     apps(t),
+    capturas(t),
     descargas(t),
     instalar(t),
     compilar(t),
+    limitaciones(t),
     faq(t),
     creditos(t),
     apoyar(t)
-  ].join("");
+  ].filter(Boolean).join("");
 
   pie(t);
   enlazarBotones(t);
+
+  document.querySelectorAll("#nav a").forEach(a =>
+    a.addEventListener("click", () => document.getElementById("nav").classList.remove("open")));
 }
 
 function hero(t) {
   return `
   <div class="hero" id="inicio"><div class="wrap">
-    <img class="mark" src="img/valkyos-symbol.svg" alt="" width="64" height="64">
-    <h1>${esc(t.inicio.titulo)}</h1>
+    <h1>${esc(t.inicio.frase)}</h1>
+    <p class="linea">${esc(t.inicio.linea)}</p>
     <div class="hero-actions">
       <a class="btn primary" href="#descargas">${esc(t.inicio.descargar)}</a>
       <a class="btn" href="#compilar">${esc(t.inicio.compilar)}</a>
@@ -93,6 +94,18 @@ function funciones(t) {
   </div></section>`;
 }
 
+function acerca(t) {
+  const a = t.acerca;
+  return `
+  <section id="acerca"><div class="wrap">
+    <h2>${esc(a.titulo)}</h2>
+    <p class="sub">${esc(a.sub)}</p>
+    <div class="feats">
+      ${a.bloques.map(x => `<div class="feat"><h3>${esc(x.t)}</h3><p>${x.d}</p></div>`).join("")}
+    </div>
+  </div></section>`;
+}
+
 function apps(t) {
   const a = t.apps;
   return `
@@ -106,70 +119,66 @@ function apps(t) {
   </div></section>`;
 }
 
+function capturas(t) {
+  if (!CAPTURAS.length) return "";
+  return `
+  <section id="capturas"><div class="wrap">
+    <h2>${esc(t.capturas.titulo)}</h2>
+    <p class="sub">${esc(t.capturas.sub)}</p>
+    <div class="phones">
+      ${CAPTURAS.map(f => `<div class="phone"><img src="img/capturas/${esc(f)}" alt="ValkyOS" loading="lazy"></div>`).join("")}
+    </div>
+  </div></section>`;
+}
+
+function filaDescarga(x, t) {
+  const d = t.descargas;
+  const enlace = x.enlace || "";
+  const boton = enlace
+    ? `<a class="btn primary small" href="${esc(enlace)}" target="_blank" rel="noopener">${esc(d.descargar)}</a>`
+    : `<span class="btn small" style="opacity:.45;pointer-events:none">${esc(d.descargar)}</span>`;
+  return `
+  <div class="dl-item">
+    <div class="dl-meta"><b>${esc(d.version)}</b> ${esc(x.version || "")} · <b>${esc(d.fecha)}</b> ${esc(fmtFecha(x.fecha))} · <b>${esc(d.tamano)}</b> ${esc(x.tamano || "—")}</div>
+    <div class="sha-row">
+      <span>${esc(d.sha)}</span>
+      <span class="sha">${esc(x.sha256 || "—")}</span>
+      ${x.sha256 ? `<button class="btn small" type="button" data-copy="${esc(x.sha256)}" data-copiado="${esc(d.copiado)}">${esc(d.copiar)}</button>` : ""}
+    </div>
+    <div style="margin-top:12px">${boton}</div>
+  </div>`;
+}
+
 function descargas(t) {
   const d = t.descargas;
+  const dispositivos = (DATA && DATA.dispositivos) || [];
   const items = (DATA && DATA.descargas) || [];
-
-  const fila = (x, ejemplo) => {
-    const enlace = x.enlace || "";
-    const boton = enlace
-      ? `<a class="btn primary small" href="${esc(enlace)}" target="_blank" rel="noopener">${esc(d.descargar)}</a>`
-      : `<span class="btn small" style="opacity:.45;pointer-events:none">${esc(d.descargar)}</span>`;
-    return `
-    <article class="dl-item">
-      <div class="dl-head">
-        <h3>${esc(x.version || "")}</h3>
-        ${ejemplo ? `<span class="tag example">${esc(d.ejemplo)}</span>` : ""}
-        <span class="tag">${esc(nombreDispositivo(x.dispositivo) || x.dispositivo || "")}</span>
-      </div>
-      <div class="dl-meta">
-        <b>${esc(d.fecha)}</b> ${esc(fmtFecha(x.fecha))} · <b>${esc(d.tamano)}</b> ${esc(x.tamano || "—")}
-      </div>
-      <div class="sha-row">
-        <span>${esc(d.sha)}</span>
-        <span class="sha">${esc(x.sha256 || "—")}</span>
-        ${x.sha256 ? `<button class="btn small" type="button" data-copy="${esc(x.sha256)}" data-copiado="${esc(d.copiado)}">${esc(d.copiar)}</button>` : ""}
-      </div>
-      <div style="margin-top:14px">${boton}</div>
-    </article>`;
-  };
-
-  let cuerpo;
-  if (items.length) {
-    cuerpo = items.map(x => fila(x, false)).join("");
-  } else if (DATA && DATA.ejemplo) {
-    cuerpo = fila(DATA.ejemplo, true);
-  } else {
-    cuerpo = `<p class="sub">${esc(d.sin)}</p>`;
-  }
-
   return `
   <section id="descargas"><div class="wrap">
     <h2>${esc(d.titulo)}</h2>
     <p class="sub">${esc(d.sub)}</p>
-    ${items.length ? "" : `<div class="warn"><span>⚠️</span><div>${esc(d.ejemploNota)}</div></div>`}
-    <div class="dl-list">${cuerpo}</div>
+    ${dispositivos.map(dev => {
+      const propios = items.filter(x => x.dispositivo === dev.id);
+      return `
+      <div class="dev">
+        <div class="dev-head"><h3>${esc(dev.nombre)}</h3><span class="tag">${esc(dev.codename || "")}</span></div>
+        <div class="mant"><b>${esc(d.mantenido)}</b> ${esc(dev.mantenedor || "")}</div>
+        ${propios.length ? propios.map(x => filaDescarga(x, t)).join("") : `<div class="prox">${esc(d.proximamente)}</div>`}
+      </div>`;
+    }).join("")}
+    <div class="pnote">${d.agregar}</div>
   </div></section>`;
 }
 
 function instalar(t) {
   const i = t.instalar;
-  const a = i.avanzado;
   return `
   <section id="instalar"><div class="wrap">
     <h2>${esc(i.titulo)}</h2>
     <p class="sub">${esc(i.sub)}</p>
     <div class="warn"><span>⚠️</span><div>${esc(i.aviso)}</div></div>
-    <ol class="steps">${i.pasos.map(p => `<li>${p}</li>`).join("")}</ol>
+    <p style="max-width:70ch;color:var(--tx2);font-size:.93rem">${esc(i.texto)}</p>
     <div class="pnote">${esc(i.nota)}</div>
-    <details class="adv">
-      <summary>${esc(a.titulo)}</summary>
-      <div class="adv-body">
-        <div class="danger"><span>⚠️</span><div>${esc(a.aviso)}</div></div>
-        <ol class="steps">${a.pasos.map(p => `<li>${p}</li>`).join("")}</ol>
-        <div class="pnote">${esc(a.nota)}</div>
-      </div>
-    </details>
   </div></section>`;
 }
 
@@ -179,13 +188,26 @@ function compilar(t) {
   <section id="compilar"><div class="wrap">
     <h2>${esc(c.titulo)}</h2>
     <p class="sub">${esc(c.sub)}</p>
+    <p style="max-width:70ch;color:var(--tx2);font-size:.93rem;margin-bottom:22px">${c.requisitos}</p>
     ${c.pasos.map(p => `
-      <div class="feat"><h3>${esc(p.t)}</h3></div>
+      <div class="feat" style="margin-bottom:6px"><h3>${esc(p.t)}</h3></div>
       <div class="code">
         <button class="copy" type="button" data-copy="${esc(p.c)}" data-copiado="${esc(t.descargas.copiado)}">${esc(t.descargas.copiar)}</button>
         <pre>${esc(p.c)}</pre>
       </div>`).join("")}
     <div class="pnote">${c.nota}</div>
+  </div></section>`;
+}
+
+function limitaciones(t) {
+  const l = t.limitaciones;
+  return `
+  <section id="limitaciones"><div class="wrap">
+    <h2>${esc(l.titulo)}</h2>
+    <p class="sub">${esc(l.sub)}</p>
+    <div class="feats">
+      ${l.items.map(x => `<div class="feat"><h3>${esc(x.t)}</h3><p>${esc(x.d)}</p></div>`).join("")}
+    </div>
   </div></section>`;
 }
 
@@ -220,7 +242,6 @@ function apoyar(t) {
       <p>${esc(a.texto)}</p>
       <div class="actions">
         <a class="btn primary" href="${esc(KOFI)}" target="_blank" rel="noopener">${esc(a.kofi)}</a>
-        <a class="btn" href="${esc(SPONSOR)}" target="_blank" rel="noopener">${esc(a.sponsor)}</a>
       </div>
       <p class="dedicated">${esc(a.creador)} · ${esc(a.dedicada)}</p>
     </div>
@@ -267,9 +288,16 @@ document.getElementById("lang").addEventListener("click", ev => {
   render();
 });
 
+document.getElementById("menu").addEventListener("click", () => {
+  document.getElementById("nav").classList.toggle("open");
+});
+
 /* ---------- datos ---------- */
-fetch("descargas.json", { cache: "no-cache" })
-  .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
-  .then(d => { DATA = d; })
-  .catch(() => { DATA = { dispositivos: [], descargas: [], ejemplo: null }; })
-  .finally(() => render());
+Promise.all([
+  fetch("descargas.json", { cache: "no-cache" }).then(r => r.ok ? r.json() : Promise.reject()).catch(() => ({ dispositivos: [], descargas: [] })),
+  fetch("capturas.json", { cache: "no-cache" }).then(r => r.ok ? r.json() : Promise.reject()).catch(() => [])
+]).then(([d, c]) => {
+  DATA = d;
+  CAPTURAS = Array.isArray(c) ? c : [];
+  render();
+});

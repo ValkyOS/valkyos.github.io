@@ -1,21 +1,24 @@
 window.VALKYOS_TEXTO_EN = {
   meta: {
     titulo: "ValkyOS",
-    descripcion: "ValkyOS: Android 17 ROM for the Motorola Edge 50 Pro, with GrapheneOS privacy."
+    descripcion: "ValkyOS: Android 17 with real privacy, optional sandboxed Google Play, for phones running LineageOS 24."
   },
   nav: {
     inicio: "Home",
     funciones: "Features",
+    acerca: "About",
     apps: "Apps",
     descargas: "Downloads",
     instalar: "Install",
     compilar: "Build",
+    limitaciones: "Limitations",
     faq: "FAQ",
     creditos: "Credits",
     apoyar: "Support"
   },
   inicio: {
-    titulo: "ValkyOS",
+    frase: "Android 17 with real privacy. Google Play optional and sandboxed.",
+    linea: "Android 17 · Sandboxed Google Play · Open source",
     descargar: "Download",
     compilar: "Build"
   },
@@ -33,77 +36,83 @@ window.VALKYOS_TEXTO_EN = {
       { t: "Assisted GPS without Google", d: "Assisted GPS (SUPL) goes through the GrapheneOS proxy." },
       { t: "Automatic reboot", d: "After eight hours locked, the phone reboots and returns to its encrypted state." },
       { t: "Lock screen clocks", d: "67 crDroid styles with a picker and live previews." },
-      { t: "Lockable bootloader", d: "On the eqe it can be locked with your own key: only a system signed by you boots." }
+      { t: "Signed with your keys", d: "On phones that allow it, the bootloader can be locked again with your own key." }
+    ]
+  },
+  acerca: {
+    titulo: "About",
+    sub: "What ValkyOS is and why it exists.",
+    bloques: [
+      { t: "What it is", d: "A privacy and security focused system that lets you use Google Play without giving it system privileges. It exists so you can have Google's apps without handing over your phone." },
+      { t: "What it is based on", d: "LineageOS 24 (Android 17). From GrapheneOS it takes sandboxed Google Play, Contact and Storage Scopes, the Sensors permission, Vanadium, HTTPS time, random MAC per connection and assisted GPS without Google. From crDroid, the lock screen clocks and performance improvements." },
+      { t: "What ValkyOS adds", d: "The integration of all of it into a single ROM, plus its own: the ValkyOS section in Settings, personalization (name, logos, wallpapers) and signing with your own keys." },
+      { t: "Which phones", d: "Any phone with a device tree, kernel and vendor files working on LineageOS 24. <a href=\"#compilar\">Build</a> explains how." },
+      { t: "Who makes it", d: "Created by dvy-jp, dedicated to Valky. An independent project, not related to LineageOS, GrapheneOS, crDroid, Motorola or Google." }
     ]
   },
   apps: {
     titulo: "Apps",
     sub: "All GrapheneOS apps are installed from its App Store, which already comes included in the ROM.",
     nota: "The GrapheneOS App Store is included. From it you install:",
-    items: ["Play Store", "Play Services", "Camera", "PDF Viewer", "Auditor"]
+    items: ["Play Store", "Play Services", "Camera", "PDF Viewer"]
+  },
+  capturas: {
+    titulo: "Screenshots",
+    sub: "The ROM on the phone."
   },
   descargas: {
     titulo: "Downloads",
-    sub: "Motorola Edge 50 Pro (eqe). The ROM is installed from recovery.",
-    ejemplo: "EXAMPLE",
-    ejemploNota: "This shows how a download will look. No versions have been published yet.",
+    sub: "By device. There is one today, like any other phone.",
+    proximamente: "Coming soon",
+    mantenido: "Maintained by",
+    agregar: "Want to add your phone? <a href=\"#compilar\">Build</a> or read <a href=\"https://github.com/ValkyOS/android\" target=\"_blank\" rel=\"noopener\">the maintainer guide</a>.",
     version: "Version",
     fecha: "Date",
     tamano: "Size",
     sha: "SHA-256",
     descargar: "Download",
-    sin: "No downloads published yet.",
-    error: "Could not load the download list.",
     copiar: "Copy",
     copiado: "Copied"
   },
   instalar: {
     titulo: "Install",
-    sub: "Read everything before you start.",
-    aviso: "Everything on the phone is erased. Back up first and make sure the bootloader is unlocked.",
-    pasos: [
-      "Back up your photos, contacts and files.",
-      "Unlock the bootloader with the Motorola code. This wipes the phone too.",
-      "Flash the ValkyOS recovery with <code>fastboot flash recovery</code>.",
-      "Boot into recovery and format the data (factory reset).",
-      "Install the ValkyOS ZIP from recovery or with <code>adb sideload</code>.",
-      "Reboot. The first boot takes a few minutes."
-    ],
-    nota: "Google Play is not included. Install it from the GrapheneOS App Store.",
-    avanzado: {
-      titulo: "Advanced: lock the bootloader with your key",
-      aviso: "Only if you built your own ROM with your own AVB key. A mistake here leaves the phone unable to boot; recovering it means unlocking and wiping everything.",
-      pasos: [
-        "Generate your keys and build with <code>avb.pem</code> in <code>vendor/lineage-priv/keys</code>.",
-        "Extract the public key: <code>avbtool extract_public_key --key avb.pem --output avb_pkmd.bin</code>.",
-        "With the bootloader unlocked: <code>fastboot flash avb_custom_key avb_pkmd.bin</code>.",
-        "Lock it: <code>fastboot oem lock</code>.",
-        "Check: <code>fastboot getvar securestate</code>."
-      ],
-      nota: "The rollback index cannot go down: with the bootloader locked, an older build will not install."
-    }
+    sub: "Same as LineageOS on your phone.",
+    aviso: "All data on the phone is erased.",
+    texto: "Follow the LineageOS guide or the one from whoever maintains your device. The ZIP is installed from recovery, just like any LineageOS ROM.",
+    nota: "Google Play is not included: install it from the GrapheneOS App Store."
   },
   compilar: {
     titulo: "Build",
-    sub: "The same commands the project uses. You need your phone's sources.",
+    sub: "ValkyOS can be built for any phone.",
+    requisitos: "You need a device tree, kernel and vendor files that work on LineageOS 24, in a <code>local_manifests</code> list.",
     pasos: [
       { t: "Prepare the folder", c: "mkdir -p ~/valkyos && cd ~/valkyos" },
       { t: "Fetch the ValkyOS manifest", c: "repo init -u https://github.com/ValkyOS/android -b 17 --git-lfs" },
-      { t: "Sync", c: "repo sync -c -j8" },
-      { t: "Add the phone's sources (example: eqe)", c: "git clone https://github.com/dvy-jp/local_manifests -b valkyos-17 .repo/local_manifests\nrepo sync -c -j8" },
+      { t: "Fetch the phone's list BEFORE the first sync (example: eqe)", c: "git clone https://github.com/dvy-jp/local_manifests -b valkyos-17 .repo/local_manifests" },
+      { t: "Sync once", c: "repo sync -c -j8" },
       { t: "Build", c: "source build/envsetup.sh\nbrunch eqe" }
     ],
-    nota: "For another phone, replace the eqe list with your device's. Your own keys go in <code>vendor/lineage-priv/keys</code>; without them the ROM is signed with test keys."
+    nota: "Replace the eqe list with your phone's and <code>brunch eqe</code> with yours. Full guide: <a href=\"https://github.com/ValkyOS/android\" target=\"_blank\" rel=\"noopener\">manifest README</a>."
+  },
+  limitaciones: {
+    titulo: "Limitations",
+    sub: "No overpromising.",
+    items: [
+      { t: "Play Integrity", d: "Not promised. Apps that require it may refuse to run." },
+      { t: "Hardware", d: "StrongBox and bootloader locking depend on the phone." },
+      { t: "Test versions", d: "Current versions are test builds." }
+    ]
   },
   faq: {
     titulo: "Frequently asked questions",
     sub: "",
     items: [
-      { q: "What is ValkyOS based on?", a: "LineageOS 24.0 (Android 17), with privacy features ported from GrapheneOS." },
+      { q: "Which phones are supported?", a: "Any phone with a device tree, kernel and vendor files working on LineageOS 24." },
+      { q: "What is ValkyOS based on?", a: "LineageOS 24 (Android 17), with features ported from GrapheneOS and crDroid." },
       { q: "Does Google Play work?", a: "Yes. Play Store and Play services run sandboxed as regular apps, and are installed from the GrapheneOS App Store." },
       { q: "Is Play Integrity guaranteed?", a: "No. It is not spoofed. Apps that require it may refuse to run." },
-      { q: "Does it have StrongBox?", a: "The Motorola Edge 50 Pro does not have it, and the ROM does not announce it." },
-      { q: "Can I lock the bootloader?", a: "On the eqe, yes, with your own AVB key. On other phones it depends on whether the bootloader accepts a custom key." },
+      { q: "Does it have StrongBox?", a: "It depends on the phone. ValkyOS does not announce it." },
+      { q: "Can I lock the bootloader?", a: "On phones that allow it, with your own AVB key." },
       { q: "How are updates installed?", a: "By flashing the new ZIP from recovery. There is no update server yet." },
       { q: "Which apps are included?", a: "The LineageOS and Android apps, plus Vanadium and the GrapheneOS App Store. The rest is installed from the App Store." },
       { q: "Is it free?", a: "Yes, it is a personal non-commercial project. If it helps you, you can support it with Ko-fi." }
@@ -123,7 +132,6 @@ window.VALKYOS_TEXTO_EN = {
     titulo: "Support",
     texto: "ValkyOS is free and non-commercial. If it is useful to you, you can help with the build servers.",
     kofi: "Ko-fi",
-    sponsor: "GitHub Sponsor",
     creador: "Created by dvy-jp",
     dedicada: "Dedicated to Valky."
   },

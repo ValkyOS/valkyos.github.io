@@ -7,14 +7,5 @@
       "mantenedor": "dvy-jp"
     }
   ],
-  "ejemplo": {
-    "ejemplo": true,
-    "dispositivo": "eqe",
-    "version": "VXX",
-    "fecha": "2026-11-14",
-    "enlace": "https://github.com/ValkyOS/valkyos.github.io/releases",
-    "tamano": "1.7 GB",
-    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
-  },
   "descargas": []
 }
