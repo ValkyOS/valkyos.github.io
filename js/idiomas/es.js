@@ -1,34 +1,33 @@
 window.VALKYOS_TEXTO_ES = {
   meta: {
     titulo: "ValkyOS",
-    descripcion: "ValkyOS: LineageOS 24 / Android 17 con funciones de privacidad de GrapheneOS, para el Motorola Edge 50 Pro."
+    descripcion: "ValkyOS: ROM Android 17 para el Motorola Edge 50 Pro, con privacidad de GrapheneOS."
   },
   nav: {
     inicio: "Inicio",
-    funciones: "Qué tiene",
-    dispositivos: "Dispositivos",
+    funciones: "Funciones",
+    apps: "Apps",
     descargas: "Descargas",
-    instalacion: "Instalación",
+    instalar: "Instalar",
     compilar: "Compilar",
-    limitaciones: "Limitaciones",
+    faq: "FAQ",
     creditos: "Créditos",
     apoyar: "Apoyar"
   },
   inicio: {
     titulo: "ValkyOS",
-    frase: "LineageOS 24 / Android 17 con funciones de privacidad de GrapheneOS, para el Motorola Edge 50 Pro.",
     descargar: "Descargar",
     compilar: "Compilar"
   },
   funciones: {
-    titulo: "Qué tiene",
-    sub: "Lo importante, sin vueltas.",
+    titulo: "Funciones",
+    sub: "Privacidad y control desde el primer arranque.",
     items: [
       { t: "Google Play aislado", d: "Play Store y Play Services corren como apps normales, sin privilegios de sistema (GmsCompat)." },
       { t: "Contact Scopes", d: "Elegís qué contactos puede ver cada app, en vez de darle todos." },
       { t: "Storage Scopes", d: "Elegís qué fotos y archivos puede ver cada app; lo que crea, lo sigue viendo." },
       { t: "Permiso de Sensores", d: "Un permiso por app para acelerómetro, giroscopio, brújula y barómetro." },
-      { t: "Vanadium y App Store", d: "Navegador y WebView de GrapheneOS, más la App Store para instalar Play y apps de GrapheneOS." },
+      { t: "Vanadium", d: "Navegador y WebView de GrapheneOS, endurecidos, en lugar de los de LineageOS." },
       { t: "Hora por HTTPS", d: "La hora se pide por HTTPS a time.grapheneos.org, sin NTP ni servidores de Google." },
       { t: "MAC aleatoria", d: "Una dirección distinta en cada conexión Wi-Fi, sin mandar el nombre del equipo." },
       { t: "GPS asistido sin Google", d: "El GPS asistido (SUPL) pasa por el intermediario de GrapheneOS." },
@@ -37,15 +36,15 @@ window.VALKYOS_TEXTO_ES = {
       { t: "Bootloader bloqueable", d: "En el eqe se puede bloquear con una llave propia: solo arranca un sistema firmado por vos." }
     ]
   },
-  dispositivos: {
-    titulo: "Dispositivos",
-    sub: "Por ahora, uno. La idea es sumar más.",
-    mantenido: "Mantenido por",
-    agregar: "¿Tenés otro teléfono? Se puede agregar cuando el árbol esté listo."
+  apps: {
+    titulo: "Apps",
+    sub: "Todas las apps de GrapheneOS se instalan desde su App Store, que ya viene incluida en la ROM.",
+    nota: "La App Store de GrapheneOS viene incluida. Desde ahí se instalan:",
+    items: ["Play Store", "Play Services", "Cámara", "Visor de PDF", "Auditor"]
   },
   descargas: {
     titulo: "Descargas",
-    sub: "La ROM se instala desde el recovery.",
+    sub: "Motorola Edge 50 Pro (eqe). La ROM se instala desde el recovery.",
     ejemplo: "EJEMPLO",
     ejemploNota: "Esto es un ejemplo de cómo se va a ver una descarga. Todavía no hay versiones publicadas.",
     version: "Versión",
@@ -58,8 +57,8 @@ window.VALKYOS_TEXTO_ES = {
     copiar: "Copiar",
     copiado: "Copiado"
   },
-  instalacion: {
-    titulo: "Instalación",
+  instalar: {
+    titulo: "Instalar",
     sub: "Leé todo antes de empezar.",
     aviso: "Se borra todo lo que tengas en el teléfono. Hacé copia de seguridad y asegurate de tener el bootloader desbloqueado.",
     pasos: [
@@ -70,7 +69,7 @@ window.VALKYOS_TEXTO_ES = {
       "Instalá el ZIP de ValkyOS desde el recovery o por <code>adb sideload</code>.",
       "Reiniciá. El primer arranque tarda unos minutos."
     ],
-    nota: "Google Play no viene instalado. Se instala desde la App Store de GrapheneOS, igual que en GrapheneOS.",
+    nota: "Google Play no viene instalado. Se instala desde la App Store de GrapheneOS.",
     avanzado: {
       titulo: "Avanzado: bloquear el bootloader con tu llave",
       aviso: "Solo si compilaste tu propia ROM con tu llave AVB. Un error acá deja el teléfono sin arrancar; para recuperarlo hay que desbloquear y se borra todo.",
@@ -85,7 +84,7 @@ window.VALKYOS_TEXTO_ES = {
     }
   },
   compilar: {
-    titulo: "Compilar para tu teléfono",
+    titulo: "Compilar",
     sub: "Los mismos comandos que usa el proyecto. Hacen falta las fuentes de tu teléfono.",
     pasos: [
       { t: "Preparar la carpeta", c: "mkdir -p ~/valkyos && cd ~/valkyos" },
@@ -96,13 +95,18 @@ window.VALKYOS_TEXTO_ES = {
     ],
     nota: "Para otro teléfono, cambiá la lista del eqe por la de tu dispositivo. Las llaves propias van en <code>vendor/lineage-priv/keys</code>; sin ellas la ROM sale con llaves de prueba."
   },
-  limitaciones: {
-    titulo: "Limitaciones",
-    sub: "Sin promesas de más.",
+  faq: {
+    titulo: "Preguntas frecuentes",
+    sub: "",
     items: [
-      { t: "Play Integrity", d: "No está prometido. Las apps que lo exigen pueden no funcionar." },
-      { t: "StrongBox", d: "El eqe no lo tiene y la ROM no lo anuncia." },
-      { t: "Bootloader bloqueado", d: "Depende del teléfono. En el eqe funciona con llave propia; en otros puede no aceptarla." }
+      { q: "¿En qué se basa ValkyOS?", a: "En LineageOS 24.0 (Android 17), con funciones de privacidad portadas de GrapheneOS." },
+      { q: "¿Google Play funciona?", a: "Sí. Play Store y Play Services corren aislados, como apps normales, y se instalan desde la App Store de GrapheneOS." },
+      { q: "¿Play Integrity está garantizado?", a: "No. No se falsifica. Las apps que lo exigen pueden no funcionar." },
+      { q: "¿Tiene StrongBox?", a: "El Motorola Edge 50 Pro no lo tiene y la ROM no lo anuncia." },
+      { q: "¿Puedo bloquear el bootloader?", a: "En el eqe sí, con tu propia llave AVB. En otros teléfonos depende de si el bootloader acepta una llave propia." },
+      { q: "¿Cómo se actualiza?", a: "Instalando el ZIP nuevo desde el recovery. Todavía no hay servidor de actualizaciones." },
+      { q: "¿Qué apps trae?", a: "Las de LineageOS y Android, más Vanadium y la App Store de GrapheneOS. El resto se instala desde la App Store." },
+      { q: "¿Es gratis?", a: "Sí, es un proyecto personal sin fines de lucro. Si te sirve, podés apoyarlo con Ko-fi." }
     ]
   },
   creditos: {
@@ -124,7 +128,6 @@ window.VALKYOS_TEXTO_ES = {
     dedicada: "Dedicada a Valky."
   },
   pie: {
-    creditos: "ValkyOS",
     github: "GitHub",
     telegram: "Telegram",
     licencia: "Licencia",

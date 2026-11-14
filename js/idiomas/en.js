@@ -1,34 +1,33 @@
 window.VALKYOS_TEXTO_EN = {
   meta: {
     titulo: "ValkyOS",
-    descripcion: "ValkyOS: LineageOS 24 / Android 17 with GrapheneOS privacy features, for the Motorola Edge 50 Pro."
+    descripcion: "ValkyOS: Android 17 ROM for the Motorola Edge 50 Pro, with GrapheneOS privacy."
   },
   nav: {
     inicio: "Home",
     funciones: "Features",
-    dispositivos: "Devices",
+    apps: "Apps",
     descargas: "Downloads",
-    instalacion: "Install",
+    instalar: "Install",
     compilar: "Build",
-    limitaciones: "Limitations",
+    faq: "FAQ",
     creditos: "Credits",
     apoyar: "Support"
   },
   inicio: {
     titulo: "ValkyOS",
-    frase: "LineageOS 24 / Android 17 with GrapheneOS privacy features, for the Motorola Edge 50 Pro.",
     descargar: "Download",
     compilar: "Build"
   },
   funciones: {
     titulo: "Features",
-    sub: "The important parts, without the fluff.",
+    sub: "Privacy and control from the first boot.",
     items: [
       { t: "Sandboxed Google Play", d: "Play Store and Play services run as regular apps, without system privileges (GmsCompat)." },
       { t: "Contact Scopes", d: "Choose which contacts each app can see, instead of handing over all of them." },
       { t: "Storage Scopes", d: "Choose which photos and files each app can see; files it creates stay visible." },
       { t: "Sensors permission", d: "A per-app permission for the accelerometer, gyroscope, compass and barometer." },
-      { t: "Vanadium and App Store", d: "GrapheneOS browser and WebView, plus the App Store to install Play and GrapheneOS apps." },
+      { t: "Vanadium", d: "GrapheneOS hardened browser and WebView, instead of the LineageOS ones." },
       { t: "HTTPS time", d: "Time is fetched over HTTPS from time.grapheneos.org, with no NTP or Google servers." },
       { t: "Random MAC", d: "A different address on every Wi-Fi connection, without sending the device name." },
       { t: "Assisted GPS without Google", d: "Assisted GPS (SUPL) goes through the GrapheneOS proxy." },
@@ -37,15 +36,15 @@ window.VALKYOS_TEXTO_EN = {
       { t: "Lockable bootloader", d: "On the eqe it can be locked with your own key: only a system signed by you boots." }
     ]
   },
-  dispositivos: {
-    titulo: "Devices",
-    sub: "One for now. The plan is to add more.",
-    mantenido: "Maintained by",
-    agregar: "Have another phone? It can be added once its tree is ready."
+  apps: {
+    titulo: "Apps",
+    sub: "All GrapheneOS apps are installed from its App Store, which already comes included in the ROM.",
+    nota: "The GrapheneOS App Store is included. From it you install:",
+    items: ["Play Store", "Play Services", "Camera", "PDF Viewer", "Auditor"]
   },
   descargas: {
     titulo: "Downloads",
-    sub: "The ROM is installed from recovery.",
+    sub: "Motorola Edge 50 Pro (eqe). The ROM is installed from recovery.",
     ejemplo: "EXAMPLE",
     ejemploNota: "This shows how a download will look. No versions have been published yet.",
     version: "Version",
@@ -58,7 +57,7 @@ window.VALKYOS_TEXTO_EN = {
     copiar: "Copy",
     copiado: "Copied"
   },
-  instalacion: {
+  instalar: {
     titulo: "Install",
     sub: "Read everything before you start.",
     aviso: "Everything on the phone is erased. Back up first and make sure the bootloader is unlocked.",
@@ -70,7 +69,7 @@ window.VALKYOS_TEXTO_EN = {
       "Install the ValkyOS ZIP from recovery or with <code>adb sideload</code>.",
       "Reboot. The first boot takes a few minutes."
     ],
-    nota: "Google Play is not included. Install it from the GrapheneOS App Store, just like on GrapheneOS.",
+    nota: "Google Play is not included. Install it from the GrapheneOS App Store.",
     avanzado: {
       titulo: "Advanced: lock the bootloader with your key",
       aviso: "Only if you built your own ROM with your own AVB key. A mistake here leaves the phone unable to boot; recovering it means unlocking and wiping everything.",
@@ -85,7 +84,7 @@ window.VALKYOS_TEXTO_EN = {
     }
   },
   compilar: {
-    titulo: "Build for your phone",
+    titulo: "Build",
     sub: "The same commands the project uses. You need your phone's sources.",
     pasos: [
       { t: "Prepare the folder", c: "mkdir -p ~/valkyos && cd ~/valkyos" },
@@ -96,13 +95,18 @@ window.VALKYOS_TEXTO_EN = {
     ],
     nota: "For another phone, replace the eqe list with your device's. Your own keys go in <code>vendor/lineage-priv/keys</code>; without them the ROM is signed with test keys."
   },
-  limitaciones: {
-    titulo: "Limitations",
-    sub: "No overpromising.",
+  faq: {
+    titulo: "Frequently asked questions",
+    sub: "",
     items: [
-      { t: "Play Integrity", d: "Not promised. Apps that require it may refuse to run." },
-      { t: "StrongBox", d: "The eqe does not have it, and the ROM does not announce it." },
-      { t: "Locked bootloader", d: "Depends on the phone. It works on the eqe with your own key; others may not accept it." }
+      { q: "What is ValkyOS based on?", a: "LineageOS 24.0 (Android 17), with privacy features ported from GrapheneOS." },
+      { q: "Does Google Play work?", a: "Yes. Play Store and Play services run sandboxed as regular apps, and are installed from the GrapheneOS App Store." },
+      { q: "Is Play Integrity guaranteed?", a: "No. It is not spoofed. Apps that require it may refuse to run." },
+      { q: "Does it have StrongBox?", a: "The Motorola Edge 50 Pro does not have it, and the ROM does not announce it." },
+      { q: "Can I lock the bootloader?", a: "On the eqe, yes, with your own AVB key. On other phones it depends on whether the bootloader accepts a custom key." },
+      { q: "How are updates installed?", a: "By flashing the new ZIP from recovery. There is no update server yet." },
+      { q: "Which apps are included?", a: "The LineageOS and Android apps, plus Vanadium and the GrapheneOS App Store. The rest is installed from the App Store." },
+      { q: "Is it free?", a: "Yes, it is a personal non-commercial project. If it helps you, you can support it with Ko-fi." }
     ]
   },
   creditos: {
@@ -124,7 +128,6 @@ window.VALKYOS_TEXTO_EN = {
     dedicada: "Dedicated to Valky."
   },
   pie: {
-    creditos: "ValkyOS",
     github: "GitHub",
     telegram: "Telegram",
     licencia: "License",

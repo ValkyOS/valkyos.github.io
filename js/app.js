@@ -50,17 +50,17 @@ function render() {
     b.setAttribute("aria-pressed", String(b.dataset.l === lang)));
 
   document.getElementById("nav").innerHTML =
-    ["inicio", "funciones", "descargas", "instalacion", "compilar", "creditos"]
+    ["inicio", "funciones", "apps", "descargas", "instalar", "compilar", "faq", "creditos", "apoyar"]
       .map(k => `<a href="#${k}">${esc(t.nav[k])}</a>`).join("");
 
   document.getElementById("app").innerHTML = [
     hero(t),
     funciones(t),
-    dispositivos(t),
+    apps(t),
     descargas(t),
-    instalacion(t),
+    instalar(t),
     compilar(t),
-    limitaciones(t),
+    faq(t),
     creditos(t),
     apoyar(t)
   ].join("");
@@ -72,8 +72,8 @@ function render() {
 function hero(t) {
   return `
   <div class="hero" id="inicio"><div class="wrap">
+    <img class="mark" src="img/valkyos-symbol.svg" alt="" width="64" height="64">
     <h1>${esc(t.inicio.titulo)}</h1>
-    <p>${esc(t.inicio.frase)}</p>
     <div class="hero-actions">
       <a class="btn primary" href="#descargas">${esc(t.inicio.descargar)}</a>
       <a class="btn" href="#compilar">${esc(t.inicio.compilar)}</a>
@@ -87,30 +87,22 @@ function funciones(t) {
   <section id="funciones"><div class="wrap">
     <h2>${esc(f.titulo)}</h2>
     <p class="sub">${esc(f.sub)}</p>
-    <div class="cards">
-      ${f.items.map(x => `<article class="card"><h3>${esc(x.t)}</h3><p>${esc(x.d)}</p></article>`).join("")}
+    <div class="feats">
+      ${f.items.map(x => `<div class="feat"><h3>${esc(x.t)}</h3><p>${esc(x.d)}</p></div>`).join("")}
     </div>
   </div></section>`;
 }
 
-function dispositivos(t) {
-  const d = t.dispositivos;
-  const lista = (DATA && DATA.dispositivos) || [];
+function apps(t) {
+  const a = t.apps;
   return `
-  <section id="dispositivos"><div class="wrap">
-    <h2>${esc(d.titulo)}</h2>
-    <p class="sub">${esc(d.sub)}</p>
-    <div class="devs">
-      ${lista.map(x => `
-        <article class="dev">
-          <div class="dev-main">
-            <h3>${esc(x.nombre)} <span class="tag">${esc(x.codename || "")}</span></h3>
-            <p>${esc(x.descripcion || "")}</p>
-            <div class="mant"><b>${esc(d.mantenido)}</b> ${esc(x.mantenedor || "")}</div>
-          </div>
-        </article>`).join("")}
+  <section id="apps"><div class="wrap">
+    <h2>${esc(a.titulo)}</h2>
+    <p class="sub">${esc(a.sub)}</p>
+    <p class="apps-note">${esc(a.nota)}</p>
+    <div class="apps">
+      ${a.items.map(n => `<span>${esc(n)}</span>`).join("")}
     </div>
-    <div class="pnote">${esc(d.agregar)}</div>
   </div></section>`;
 }
 
@@ -160,18 +152,16 @@ function descargas(t) {
   </div></section>`;
 }
 
-function instalacion(t) {
-  const i = t.instalacion;
+function instalar(t) {
+  const i = t.instalar;
   const a = i.avanzado;
   return `
-  <section id="instalacion"><div class="wrap">
+  <section id="instalar"><div class="wrap">
     <h2>${esc(i.titulo)}</h2>
     <p class="sub">${esc(i.sub)}</p>
     <div class="warn"><span>⚠️</span><div>${esc(i.aviso)}</div></div>
-    <div class="panel">
-      <ol class="steps">${i.pasos.map(p => `<li>${p}</li>`).join("")}</ol>
-      <div class="pnote">${esc(i.nota)}</div>
-    </div>
+    <ol class="steps">${i.pasos.map(p => `<li>${p}</li>`).join("")}</ol>
+    <div class="pnote">${esc(i.nota)}</div>
     <details class="adv">
       <summary>${esc(a.titulo)}</summary>
       <div class="adv-body">
@@ -190,26 +180,23 @@ function compilar(t) {
     <h2>${esc(c.titulo)}</h2>
     <p class="sub">${esc(c.sub)}</p>
     ${c.pasos.map(p => `
-      <div class="panel">
-        <h3>${esc(p.t)}</h3>
-        <div class="code">
-          <button class="copy" type="button" data-copy="${esc(p.c)}" data-copiado="${esc(t.descargas.copiado)}">${esc(t.descargas.copiar)}</button>
-          <pre>${esc(p.c)}</pre>
-        </div>
+      <div class="feat"><h3>${esc(p.t)}</h3></div>
+      <div class="code">
+        <button class="copy" type="button" data-copy="${esc(p.c)}" data-copiado="${esc(t.descargas.copiado)}">${esc(t.descargas.copiar)}</button>
+        <pre>${esc(p.c)}</pre>
       </div>`).join("")}
     <div class="pnote">${c.nota}</div>
   </div></section>`;
 }
 
-function limitaciones(t) {
-  const l = t.limitaciones;
+function faq(t) {
+  const f = t.faq;
   return `
-  <section id="limitaciones"><div class="wrap">
-    <h2>${esc(l.titulo)}</h2>
-    <p class="sub">${esc(l.sub)}</p>
-    <ul class="limits">
-      ${l.items.map(x => `<li><b>${esc(x.t)}:</b> ${esc(x.d)}</li>`).join("")}
-    </ul>
+  <section id="faq"><div class="wrap">
+    <h2>${esc(f.titulo)}</h2>
+    <div class="faq">
+      ${f.items.map(x => `<details><summary>${esc(x.q)}</summary><div class="a">${esc(x.a)}</div></details>`).join("")}
+    </div>
   </div></section>`;
 }
 
@@ -219,7 +206,7 @@ function creditos(t) {
   <section id="creditos"><div class="wrap">
     <h2>${esc(c.titulo)}</h2>
     <p class="sub">${esc(c.sub)}</p>
-    ${c.items.map(x => `<div class="cred"><div><b>${esc(x.n)}</b><p>${esc(x.d)}</p></div></div>`).join("")}
+    ${c.items.map(x => `<div class="cred"><b>${esc(x.n)}</b><p>${esc(x.d)}</p></div>`).join("")}
     <div class="pnote">${esc(c.aviso)}</div>
   </div></section>`;
 }
